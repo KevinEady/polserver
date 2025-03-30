@@ -151,7 +151,9 @@ void TargetCursor::handle_target_cursor( Mobile::Character* chr, PKTBI_6C* msg )
     if ( chr->dead() )  // but is dead
     {
       if ( chr->client != nullptr )
-        send_sysmessage( chr->client, "I am dead and cannot do that." );
+        send_sysmessage(
+            chr->client,
+            "I am dead and cannot do that." );  // 1019048 I am dead and cannot do that.
       cancel( chr );
       return;
     }
@@ -161,9 +163,13 @@ void TargetCursor::handle_target_cursor( Mobile::Character* chr, PKTBI_6C* msg )
       if ( chr->client != nullptr )
       {
         if ( chr->frozen() )
-          private_say_above( chr, chr, "I am frozen and cannot do that." );
+          private_say_above(
+              chr, chr,
+              "I am frozen and cannot do that." );  // 1075828 You are frozen and can not move.
         else if ( chr->paralyzed() )
-          private_say_above( chr, chr, "I am paralyzed and cannot do that." );
+          private_say_above( chr, chr,
+                             "I am paralyzed and cannot do that." );  // 1075857 You can not use
+                                                                      // that while paralyzed.
       }
       cancel( chr );
       return;
@@ -188,7 +194,7 @@ void TargetCursor::handle_target_cursor( Mobile::Character* chr, PKTBI_6C* msg )
           if ( ( JusticeRegion::RunNoCombatCheck( chr->client ) == true ) ||
                ( JusticeRegion::RunNoCombatCheck( targeted->client ) == true ) )
           {
-            send_sysmessage( chr->client, "Combat is not allowed in this area." );
+            send_sysmessage( chr->client, "Combat is not allowed in this area." );  // ?
             cancel( chr );
             return;
           }
@@ -254,7 +260,7 @@ void LosCheckedTargetCursor::on_target_cursor( Mobile::Character* chr, PKTBI_6C*
   if ( uobj == nullptr )
   {
     if ( chr->client != nullptr )
-      send_sysmessage( chr->client, "What you selected does not seem to exist." );
+      send_sysmessage( chr->client, "What you selected does not seem to exist." );  // ?
     if ( inform_on_cancel_ )
       ( *func )( chr, nullptr );
     return;
@@ -265,7 +271,9 @@ void LosCheckedTargetCursor::on_target_cursor( Mobile::Character* chr, PKTBI_6C*
   if ( !additlegal && !chr->realm()->has_los( *chr, *toplevel_owner ) )
   {
     if ( chr->client != nullptr )
-      send_sysmessage( chr->client, "That is not within your line of sight." );
+      send_sysmessage( chr->client,
+                       "That is not within your line of sight." );  // 1052011 You must have line of
+                                                                    // sight to do that.
     if ( inform_on_cancel_ )
       ( *func )( chr, nullptr );
     return;
@@ -308,7 +316,7 @@ void NoLosCheckedTargetCursor::on_target_cursor( Mobile::Character* chr, PKTBI_6
   if ( uobj == nullptr )
   {
     if ( chr->client != nullptr )
-      send_sysmessage( chr->client, "What you selected does not seem to exist." );
+      send_sysmessage( chr->client, "What you selected does not seem to exist." );  // ?
     if ( inform_on_cancel_ )
       ( *func )( chr, nullptr );
     return;

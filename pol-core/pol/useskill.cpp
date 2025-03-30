@@ -53,7 +53,9 @@ void handle_use_skill( Network::Client* client, PKTIN_12* msg )
           client->instance_, client->chr->name().c_str(), client->acct->name(), int(skillnum));
           cerr << "Character " << client->chr->name() << " (acct: " << client->chr->acct->name() <<
      "): No handler for skill " << int(skillnum) << endl;*/
-  send_sysmessage( client, "That skill cannot be used directly." );
+  send_sysmessage(
+      client,
+      "That skill cannot be used directly." );  // 500014 That skill cannot be used directly.
 }
 
 
@@ -91,27 +93,35 @@ bool CanUseSkill( Network::Client* client )
 
   if ( chr->dead() )
   {
-    private_say_above( chr, chr, "I am dead and cannot do that." );
+    private_say_above( chr, chr,
+                       "I am dead and cannot do that." );  // 1019048 I am dead and cannot do that.
     return false;
   }
   else if ( chr->skill_ex_active() || chr->casting_spell() )
   {
-    private_say_above( chr, chr, "I am already performing another action." );
+    private_say_above( chr, chr,
+                       "I am already performing another action." );  // 500310 You are too busy with
+                                                                     // something else.
     return false;
   }
   else if ( poltime() < chr->disable_skills_until() )
   {
-    send_sysmessage( client, "You must wait to perform another action." );
+    send_sysmessage( client,
+                     "You must wait to perform another action." );  // 500119 You must wait to
+                                                                    // perform another action.
     return false;
   }
   else if ( chr->frozen() )
   {
-    private_say_above( chr, chr, "I am frozen and cannot do that." );
+    private_say_above(
+        chr, chr, "I am frozen and cannot do that." );  // 500111 You are frozen and cannot move.
     return false;
   }
   else if ( chr->paralyzed() )
   {
-    private_say_above( chr, chr, "I am paralyzed and cannot do that." );
+    private_say_above(
+        chr, chr,
+        "I am paralyzed and cannot do that." );  // 1075857 You can not use that while paralyzed.
     return false;
   }
 

@@ -29,7 +29,8 @@ void handle_attack( Network::Client* client, Core::PKTIN_05* msg )
 {
   if ( client->chr->dead() )
   {
-    private_say_above( client->chr, client->chr, "I am dead and cannot do that." );
+    private_say_above( client->chr, client->chr,
+                       "I am dead and cannot do that." );  // 1019048 I am dead and cannot do that.
     return;
   }
 
@@ -57,7 +58,7 @@ void handle_attack( Network::Client* client, Core::PKTIN_05* msg )
     if ( Core::JusticeRegion::RunNoCombatCheck( defender->client ) == true )
     {
       client->chr->send_highlight();
-      Core::send_sysmessage( client, "Combat is not allowed in this area." );
+      Core::send_sysmessage( client, "Combat is not allowed in this area." );  // ?
       return;
     }
   }

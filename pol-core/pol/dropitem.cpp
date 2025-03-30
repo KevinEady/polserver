@@ -83,7 +83,8 @@ bool place_item_in_container( Network::Client* client, Items::Item* item, UConta
   if ( !cont->can_add( *item ) )
   {
     send_item_move_failure( client, MOVE_ITEM_FAILURE_UNKNOWN );
-    send_sysmessage( client, "That item is too heavy for the container or the container is full." );
+    send_sysmessage( client,
+                     "That item is too heavy for the container or the container is full." );  // ?
     return false;
   }
   if ( !cont->can_insert_add_item( client->chr, UContainer::MT_PLAYER, item ) )
@@ -98,13 +99,13 @@ bool place_item_in_container( Network::Client* client, Items::Item* item, UConta
   if ( !cont->can_add_to_slot( slotIndex ) )
   {
     send_item_move_failure( client, MOVE_ITEM_FAILURE_UNKNOWN );
-    send_sysmessage( client, "The container has no free slots available!" );
+    send_sysmessage( client, "The container has no free slots available!" );  // ?
     return false;
   }
   if ( !item->slot_index( slotIndex ) )
   {
     send_item_move_failure( client, MOVE_ITEM_FAILURE_UNKNOWN );
-    send_sysmessage( client, "The container has no free slots available!" );
+    send_sysmessage( client, "The container has no free slots available!" );  // ?
     return false;
   }
 
@@ -140,7 +141,7 @@ bool place_item_in_secure_trade_container( Network::Client* client, Items::Item*
   Mobile::Character* dropon = client->chr->trading_with.get();
   if ( dropon == nullptr || dropon->client == nullptr )
   {
-    send_sysmessage( client, "Unable to complete trade" );
+    send_sysmessage( client, "Unable to complete trade" );  // 1076256 That item cannot be traded.
     return false;
   }
   if ( gamestate.system_hooks.can_trade )
@@ -155,7 +156,7 @@ bool place_item_in_secure_trade_container( Network::Client* client, Items::Item*
   }
   if ( !cont->can_add( *item ) )
   {
-    send_sysmessage( client, "That's too heavy to trade." );
+    send_sysmessage( client, "That's too heavy to trade." );  // 1042272 That is too heavy.
     return false;
   }
   if ( !cont->can_insert_add_item( client->chr, UContainer::MT_PLAYER, item ) )
@@ -252,7 +253,7 @@ bool add_item_to_stack( Network::Client* client, Items::Item* item, Items::Item*
          !target_item->container->can_insert_increase_stack(
              client->chr, UContainer::MT_PLAYER, target_item, item->getamount(), item ) ) )
   {
-    send_sysmessage( client, "Could not add item to stack." );
+    send_sysmessage( client, "Could not add item to stack." );  // ?
     send_item_move_failure( client, MOVE_ITEM_FAILURE_UNKNOWN );
 
     return false;
@@ -458,7 +459,7 @@ bool open_trade_window( Network::Client* client, Items::Item* item, Mobile::Char
 {
   if ( !Plib::systemstate.config.enable_secure_trading )
   {
-    send_sysmessage( client, "Secure trading is unavailable." );
+    send_sysmessage( client, "Secure trading is unavailable." );  // ?
     return false;
   }
 
@@ -466,33 +467,40 @@ bool open_trade_window( Network::Client* client, Items::Item* item, Mobile::Char
   {
     if ( dropon->warmode() )
     {
-      send_sysmessage( client, "You cannot trade with someone in war mode." );
+      send_sysmessage( client, "You cannot trade with someone in war mode." );  // ?
       return false;
     }
     if ( client->chr->warmode() )
     {
-      send_sysmessage( client, "You cannot trade while in war mode." );
+      send_sysmessage( client, "You cannot trade while in war mode." );  // ?
       return false;
     }
   }
   if ( dropon->is_trading() )
   {
-    send_sysmessage( client, "That person is already involved in a trade." );
+    send_sysmessage(
+        client, "That person is already involved in a trade." );  // 1062779 That person is already
+                                                                  // involved in a trade
     return false;
   }
   if ( client->chr->is_trading() )
   {
-    send_sysmessage( client, "You are already involved in a trade." );
+    send_sysmessage( client,
+                     "You are already involved in a trade." );  // 1004041 You can't do that while
+                                                                // you have a trade pending.
     return false;
   }
   if ( !dropon->client )
   {
-    send_sysmessage( client, "That person is already involved in a trade." );
+    send_sysmessage(
+        client, "That person is already involved in a trade." );  // 1062779 That person is already
+                                                                  // involved in a trade
     return false;
   }
   if ( client->chr->dead() || dropon->dead() )
   {
-    send_sysmessage( client, "Ghosts cannot trade items." );
+    send_sysmessage( client,
+                     "Ghosts cannot trade items." );  // 1019048 I am dead and cannot do that.
     return false;
   }
 

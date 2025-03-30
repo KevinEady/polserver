@@ -108,7 +108,9 @@ void doubleclick( Network::Client* client, PKTIN_06* msg )
 
   if ( client->chr->dblclick_wait() > read_gameclock() )
   {
-    private_say_above( client->chr, client->chr, "You must wait to use something again." );
+    private_say_above( client->chr, client->chr,
+                       "You must wait to use something again." );  // 500119 You must wait to
+                                                                   // perform another action.
     return;
   }
   else
@@ -187,23 +189,30 @@ void doubleclick( Network::Client* client, PKTIN_06* msg )
 
       if ( !id.ghosts_can_use && client->chr->dead() )
       {
-        private_say_above( client->chr, client->chr, "I am dead and cannot do that." );
+        private_say_above(
+            client->chr, client->chr,
+            "I am dead and cannot do that." );  // 1019048 I am dead and cannot do that.
         return;
       }
       if ( !id.can_use_while_frozen && client->chr->frozen() )
       {
-        private_say_above( client->chr, client->chr, "I am frozen and cannot do that." );
+        private_say_above(
+            client->chr, client->chr,
+            "I am frozen and cannot do that." );  // 500111 You are frozen and cannot move.
         return;
       }
       if ( !id.can_use_while_paralyzed && client->chr->paralyzed() )
       {
-        private_say_above( client->chr, client->chr, "I am paralyzed and cannot do that." );
+        private_say_above( client->chr, client->chr,
+                           "I am paralyzed and cannot do that." );  // 1075857 You can not use that
+                                                                    // while paralyzed.
         return;
       }
 
       if ( !client->chr->can_dblclickany() && !item->in_range( client->chr, id.doubleclick_range ) )
       {
-        private_say_above( client->chr, item, "That is too far away." );
+        private_say_above( client->chr, item,
+                           "That is too far away." );  // 500295 You are too far away to do that.
         return;
       }
       UObject* obj = item->toplevel_owner();
@@ -211,7 +220,7 @@ void doubleclick( Network::Client* client, PKTIN_06* msg )
       if ( id.use_requires_los && !client->chr->realm()->has_los( *client->chr, *obj ) )  // DAVE
                                                                                           // 11/24
       {
-        private_say_above( client->chr, item, "I can't see that." );
+        private_say_above( client->chr, item, "I can't see that." );  // 500876 You can't see that.
         return;
       }
 

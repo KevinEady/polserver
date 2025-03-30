@@ -191,7 +191,8 @@ void USpell::cast( Mobile::Character* chr )
   if ( nocast_here( chr ) )
   {
     if ( chr->client != nullptr )
-      send_sysmessage( chr->client, "Spells cannot be cast here." );
+      send_sysmessage( chr->client,
+                       "Spells cannot be cast here." );  // 502629 You cannot cast spells here.
     return;
   }
 
@@ -208,7 +209,9 @@ void USpell::cast( Mobile::Character* chr )
   }
 
   if ( chr->client != nullptr )
-    send_sysmessage( chr->client, "That spell doesn't seem to work." );
+    send_sysmessage( chr->client,
+                     "That spell doesn't seem to work." );  // 1060153 A strange magical force
+                                                            // prevents your spell from working.
 }
 
 bool USpell::consume_reagents( Mobile::Character* chr )
@@ -286,7 +289,9 @@ void do_cast( Network::Client* client, u16 spellid )
   if ( spell == nullptr )
   {
     ERROR_PRINTLN( "Spell {} is not implemented.", spellid );
-    send_sysmessage( client, "That spell does not function." );
+    send_sysmessage( client,
+                     "That spell does not function." );  // 1060153 A strange magical force prevents
+                                                         // your spell from working.
     return;
   }
 
@@ -296,31 +301,39 @@ void do_cast( Network::Client* client, u16 spellid )
 
   if ( client->chr->frozen() )
   {
-    private_say_above( client->chr, client->chr, "I am frozen and cannot cast spells" );
+    private_say_above(
+        client->chr, client->chr,
+        "I am frozen and cannot cast spells" );  // 502643 You cannot cast a spell while frozen.
     return;
   }
 
   if ( client->chr->paralyzed() )
   {
-    private_say_above( client->chr, client->chr, "I am paralyzed and cannot cast spells" );
+    private_say_above(
+        client->chr, client->chr,
+        "I am paralyzed and cannot cast spells" );  // 1075857 You can not use that while paralyzed.
     return;
   }
 
   if ( client->chr->skill_ex_active() )
   {
-    send_sysmessage( client, "You are already doing something else." );
+    send_sysmessage(
+        client,
+        "You are already doing something else." );  // 500310 You are too busy with something else.
     return;
   }
 
   if ( client->chr->casting_spell() )
   {
-    send_sysmessage( client, "You are already casting a spell." );
+    send_sysmessage(
+        client, "You are already casting a spell." );  // 502642 You are already casting a spell.
     return;
   }
 
   if ( nocast_here( client->chr ) )
   {
-    send_sysmessage( client, "Spells cannot be cast here." );
+    send_sysmessage( client,
+                     "Spells cannot be cast here." );  // 502629 You cannot cast spells here.
     return;
   }
 
@@ -328,7 +341,7 @@ void do_cast( Network::Client* client, u16 spellid )
   {
     if ( !knows_spell( client->chr, spellid ) )
     {
-      send_sysmessage( client, "You don't know that spell." );
+      send_sysmessage( client, "You don't know that spell." );  // 501902 You don't know that spell.
       return;
     }
   }
@@ -359,7 +372,8 @@ void handle_open_spellbook( Network::Client* client, PKTIN_12* /*msg*/ )
 
   if ( client->chr->dead() )
   {
-    send_sysmessage( client, "I am dead and cannot do that." );
+    send_sysmessage( client,
+                     "I am dead and cannot do that." );  // 1019048 I am dead and cannot do that.
     return;
   }
 

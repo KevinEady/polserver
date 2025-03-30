@@ -616,7 +616,7 @@ void Item::readProperties( Clib::ConfigElem& elem )
 
 void Item::builtin_on_use( Network::Client* client )
 {
-  Core::send_sysmessage( client, "I can't think of a way to use that." );
+  Core::send_sysmessage( client, "I can't think of a way to use that." );  // ?
 }
 
 void Item::snoop( Network::Client* client, Mobile::Character* owner )
@@ -625,7 +625,9 @@ void Item::snoop( Network::Client* client, Mobile::Character* owner )
 
   if ( client->chr->skill_ex_active() || client->chr->casting_spell() )
   {
-    Core::send_sysmessage( client, "I am already doing something else." );
+    Core::send_sysmessage(
+        client,
+        "I am already doing something else." );  // 500310 You are too busy with something else.
     return;
   }
 
@@ -659,7 +661,9 @@ void Item::double_click( Network::Client* client )
   if ( itemdesc.requires_attention &&
        ( client->chr->skill_ex_active() || client->chr->casting_spell() ) )
   {
-    Core::send_sysmessage( client, "I am already doing something else." );
+    Core::send_sysmessage(
+        client,
+        "I am already doing something else." );  // 500310 You are too busy with something else.
     return;
   }
 

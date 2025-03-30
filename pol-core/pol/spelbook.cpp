@@ -80,7 +80,14 @@ void Spellbook::double_click( Network::Client* client )
     send_put_in_container( client, this );
   else
   {
-    send_sysmessage( client, "Spellbooks must be equipped or in the top level backpack to use." );
+    send_sysmessage(
+        client,
+        "Spellbooks must be equipped or in the top level backpack to use." );  // 500207 The
+                                                                               // spellbook must be
+                                                                               // in your backpack
+                                                                               // (and not in a
+                                                                               // container within)
+                                                                               // to open.
     return;
   }
 
@@ -94,24 +101,34 @@ void Spellbook::double_click( Network::Client* client )
   else if ( !client->acctSupports( Plib::ExpansionVersion::AOS ) &&
             ( spell_school == 1 || spell_school == 2 ) )
   {
-    send_sysmessage( client, "This item requires at least the Age of Shadows Expansion." );
+    send_sysmessage( client, "This item requires at least the Age of Shadows Expansion." );  // ?
     return;
   }
   else if ( !client->acctSupports( Plib::ExpansionVersion::SE ) &&
             ( spell_school == 4 || spell_school == 5 ) )
   {
-    send_sysmessage( client, "This item requires at least the Samurai Empire Expansion." );
+    send_sysmessage(
+        client,
+        "This item requires at least the Samurai Empire Expansion." );  // 1063307 The "Samurai
+                                                                        // Empire" expansion is
+                                                                        // required to attempt this
+                                                                        // item.
     return;
   }
   else if ( !client->acctSupports( Plib::ExpansionVersion::ML ) && spell_school == 6 )
   {
-    send_sysmessage( client, "This item requires at least the Mondain's Legacy Expansion." );
+    send_sysmessage(
+        client,
+        "This item requires at least the Mondain's Legacy Expansion." );  // 1072650 The "Mondain's
+                                                                          // Legacy" expansion is
+                                                                          // required to attempt
+                                                                          // this item.
     return;
   }
   else if ( !client->acctSupports( Plib::ExpansionVersion::SA ) &&
             ( spell_school == 3 || spell_school == 7 ) )
   {
-    send_sysmessage( client, "This item requires at least the Stygian Abyss Expansion." );
+    send_sysmessage( client, "This item requires at least the Stygian Abyss Expansion." );  // ?
     return;
   }
   else
@@ -379,7 +396,7 @@ void Spellbook::send_book_old( Network::Client* client )
   }
   else
   {
-    send_sysmessage( client, "That is locked." );
+    send_sysmessage( client, "That is locked." );  // 501283 That is locked.
   }
 
   client->restart();

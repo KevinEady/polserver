@@ -4946,7 +4946,9 @@ BObjectImp* UOExecutorModule::mf_UseItem()
     {
       if ( chr->client != nullptr )
       {
-        send_sysmessage( chr->client, "I am already doing something else." );
+        send_sysmessage(
+            chr->client,
+            "I am already doing something else." );  // 500310 You are too busy with something else.
         return new BError( "Character busy." );
         ;
       }

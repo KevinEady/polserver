@@ -2653,7 +2653,7 @@ void Character::showarmor() const
 {
   if ( client != nullptr )
   {
-    Core::send_sysmessage( client, "Your armor coverage:" );
+    Core::send_sysmessage( client, "Your armor coverage:" );  // (Internal)
     for ( unsigned i = 0; i < armor_.size(); ++i )
     {
       std::string text = Core::gamestate.armorzones[i].name + ": ";
@@ -2661,7 +2661,7 @@ void Character::showarmor() const
         text += "Nothing";
       else
         text += armor_[i]->name();
-      Core::send_sysmessage( client, text );
+      Core::send_sysmessage( client, text );  // (Internal)
     }
   }
 }
@@ -3414,7 +3414,7 @@ void Character::attack( Character* opponent )
           INFO_PRINTLN( "{} hits deflected", opponent->shield->ar() );
         if ( Core::settingsManager.combat_config.display_parry_success_messages &&
              opponent->client )
-          Core::send_sysmessage( opponent->client, "You successfully parried the attack!" );
+          Core::send_sysmessage( opponent->client, "You successfully parried the attack!" );  // ?
 
         damage -= opponent->shield->ar();
         if ( damage < 0 )
@@ -3751,9 +3751,13 @@ bool Character::can_face( Core::UFACING /*i_facing*/ )
     if ( client != nullptr )
     {
       if ( frozen() )
-        private_say_above( this, this, "I am frozen and cannot move." );
+        private_say_above(
+            this, this,
+            "I am frozen and cannot move." );  // 1075828 You are frozen and can not move.
       else if ( paralyzed() )
-        private_say_above( this, this, "I am paralyzed and cannot move." );
+        private_say_above(
+            this, this,
+            "I am paralyzed and cannot move." );  // 1075857 You can not use that while paralyzed.
     }
     return false;
   }
@@ -3761,7 +3765,8 @@ bool Character::can_face( Core::UFACING /*i_facing*/ )
   if ( Core::settingsManager.ssopt.movement_uses_stamina &&
        vital( Core::gamestate.pVitalStamina->vitalid ).current_ones() == 0 && !dead() )
   {
-    private_say_above( this, this, "You are too fatigued to move." );
+    private_say_above( this, this,
+                       "You are too fatigued to move." );  // 500110 You are too fatigued to move.
     return false;
   }
 
@@ -3920,7 +3925,8 @@ bool Character::move( unsigned char i_dir )
       VitalValue& stamina = vital( Core::gamestate.pVitalStamina->vitalid );
       if ( !consume( Core::gamestate.pVitalStamina, stamina, tmv, VitalDepletedReason::MOVEMENT ) )
       {
-        private_say_above( this, this, "You are too fatigued to move." );
+        private_say_above(
+            this, this, "You are too fatigued to move." );  // 500110 You are too fatigued to move.
         return false;
       }
     }

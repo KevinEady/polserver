@@ -722,7 +722,7 @@ void UContainer::builtin_on_use( Network::Client* client )
   }
   else
   {
-    send_sysmessage( client, "That is locked." );
+    send_sysmessage( client, "That is locked." );  // 501283 That is locked.
   }
 
   client->restart();

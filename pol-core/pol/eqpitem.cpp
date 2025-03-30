@@ -102,9 +102,11 @@ void equip_item( Network::Client* client, PKTIN_13* msg )
     // return the item to wherever it was. (?)
     info.undo( client->chr );
     if ( client->chr == equip_on )
-      send_sysmessage( client, "You are not strong enough to use that." );
+      send_sysmessage( client,
+                       "You are not strong enough to use that." );  // 500213 You are not strong
+                                                                    // enough to equip that.
     else
-      send_sysmessage( client, "Insufficient strength to equip that." );
+      send_sysmessage( client, "Insufficient strength to equip that." );  // ?
     return;
   }
 

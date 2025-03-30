@@ -146,7 +146,7 @@ void handle_rename_char( Client* client, PKTIN_75* msg )
                        static_cast<int>( strlen( msg->name ) ) );
           POLLOG_INFOLN( tmp );
           *p = '\0';
-          send_sysmessage( client, "Invalid name!" );
+          send_sysmessage( client, "Invalid name!" );  // 1077854 You used an invalid name.
           return;  // dave 12/26 if invalid name, do not apply to chr!
         }
       }
@@ -154,12 +154,12 @@ void handle_rename_char( Client* client, PKTIN_75* msg )
     }
     else
     {
-      send_sysmessage( client, "I can't rename that." );
+      send_sysmessage( client, "I can't rename that." );  // ?
     }
   }
   else
   {
-    send_sysmessage( client, "I can't find that." );
+    send_sysmessage( client, "I can't find that." );  // ?
   }
 }
 

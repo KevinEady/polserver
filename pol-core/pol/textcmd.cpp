@@ -205,7 +205,9 @@ void handle_ident_cursor( Mobile::Character* chr, PKTBI_6C* msgin )
 
 void textcmd_ident( Network::Client* client )
 {
-  send_sysmessage( client, "Select something to identify." );
+  send_sysmessage(
+      client,
+      "Select something to identify." );  // 500343 What do you wish to appraise and identify?
   gamestate.target_cursors.ident_cursor.send_object_cursor( client );
 }
 
@@ -238,12 +240,12 @@ void RepSystem::show_repdata( Network::Client* client, Mobile::Character* mob )
 {
   if ( mob->is_murderer() )
   {
-    send_sysmessage( client, "Mobile is a murderer." );
+    send_sysmessage( client, "Mobile is a murderer." );  // (Internal)
   }
   else if ( mob->is_criminal() )
   {
     send_sysmessage( client, "Mobile is criminal for " + timeoutstr( mob->criminal_until_ ) + " [" +
-                                 Clib::tostring( mob->criminal_until_ ) + "]" );
+                                 Clib::tostring( mob->criminal_until_ ) + "]" );  // (Internal)
   }
 
   for ( Mobile::Character::MobileCont::const_iterator itr = mob->aggressor_to_.begin();
@@ -251,7 +253,7 @@ void RepSystem::show_repdata( Network::Client* client, Mobile::Character* mob )
   {
     send_sysmessage( client, "Aggressor to " + ( *itr ).first->name() + " for " +
                                  timeoutstr( ( *itr ).second ) + " [" +
-                                 Clib::tostring( ( *itr ).second ) + "]" );
+                                 Clib::tostring( ( *itr ).second ) + "]" );  // (Internal)
   }
 
   for ( Mobile::Character::MobileCont::const_iterator itr = mob->lawfully_damaged_.begin();
@@ -259,14 +261,14 @@ void RepSystem::show_repdata( Network::Client* client, Mobile::Character* mob )
   {
     send_sysmessage( client, "Lawfully Damaged " + ( *itr ).first->name() + " for " +
                                  timeoutstr( ( *itr ).second ) + " [" +
-                                 Clib::tostring( ( *itr ).second ) + "]" );
+                                 Clib::tostring( ( *itr ).second ) + "]" );  // (Internal)
   }
 
   for ( Mobile::Character::ToBeReportableList::const_iterator itr = mob->to_be_reportable_.begin();
         itr != mob->to_be_reportable_.end(); ++itr )
   {
     USERIAL serial = ( *itr );
-    send_sysmessage( client, "ToBeReportable: " + Clib::hexint( serial ) );
+    send_sysmessage( client, "ToBeReportable: " + Clib::hexint( serial ) );  // (Internal)
   }
 
   for ( Mobile::Character::ReportableList::const_iterator itr = mob->reportable_.begin();
@@ -274,13 +276,14 @@ void RepSystem::show_repdata( Network::Client* client, Mobile::Character* mob )
   {
     const Mobile::reportable_t& rt = ( *itr );
     send_sysmessage( client, "Reportable: " + Clib::hexint( rt.serial ) + " at " +
-                                 Clib::tostring( rt.polclock ) );
+                                 Clib::tostring( rt.polclock ) );  // (Internal)
   }
 
   if ( mob->repsys_task_ != nullptr )
     send_sysmessage( client, "Repsys task is active, runs in " +
                                  timeoutstr( mob->repsys_task_->next_run_clock() ) + " [" +
-                                 Clib::tostring( mob->repsys_task_->next_run_clock() ) + "]" );
+                                 Clib::tostring( mob->repsys_task_->next_run_clock() ) +
+                                 "]" );  // (Internal)
 }
 
 void show_repdata( Mobile::Character* looker, Mobile::Character* mob )
@@ -291,7 +294,7 @@ void show_repdata( Mobile::Character* looker, Mobile::Character* mob )
 
 void textcmd_repdata( Network::Client* client )
 {
-  send_sysmessage( client, "Please target a mobile to display repdata for." );
+  send_sysmessage( client, "Please target a mobile to display repdata for." );  // (Internal)
   gamestate.target_cursors.repdata_cursor.send_object_cursor( client );
 }
 
@@ -302,15 +305,17 @@ void start_packetlog( Mobile::Character* looker, Mobile::Character* mob )
     auto res = mob->client->start_log();
     if ( res == Network::PacketLog::Success )
     {
-      send_sysmessage( looker->client, "I/O log file opened for " + mob->name() );
+      send_sysmessage( looker->client, "I/O log file opened for " + mob->name() );  // (Internal)
     }
     else if ( res == Network::PacketLog::Unchanged )
     {
-      send_sysmessage( looker->client, "I/O log was already open for " + mob->name() );
+      send_sysmessage( looker->client,
+                       "I/O log was already open for " + mob->name() );  // (Internal)
     }
     else
     {
-      send_sysmessage( looker->client, "Unable to open I/O log file for " + mob->name() );
+      send_sysmessage( looker->client,
+                       "Unable to open I/O log file for " + mob->name() );  // (Internal)
     }
   }
 }
@@ -319,7 +324,7 @@ void textcmd_startlog( Network::Client* client )
 {
   if ( client->chr->can_plogany() )
   {
-    send_sysmessage( client, "Please target a player to start packet logging for." );
+    send_sysmessage( client, "Please target a player to start packet logging for." );  // (Internal)
     gamestate.target_cursors.startlog_cursor.send_object_cursor( client );
   }
   else
@@ -327,15 +332,15 @@ void textcmd_startlog( Network::Client* client )
     auto res = client->start_log();
     if ( res == Network::PacketLog::Success )
     {
-      send_sysmessage( client, "I/O log file opened." );
+      send_sysmessage( client, "I/O log file opened." );  // (Internal)
     }
     else if ( res == Network::PacketLog::Unchanged )
     {
-      send_sysmessage( client, "I/O log was already open." );
+      send_sysmessage( client, "I/O log was already open." );  // (Internal)
     }
     else
     {
-      send_sysmessage( client, "Unable to open I/O log file." );
+      send_sysmessage( client, "Unable to open I/O log file." );  // (Internal)
     }
   }
 }
@@ -360,7 +365,7 @@ void textcmd_stoplog( Network::Client* client )
 {
   if ( client->chr->can_plogany() )
   {
-    send_sysmessage( client, "Please target a player to stop packet logging for." );
+    send_sysmessage( client, "Please target a player to stop packet logging for." );  // (Internal)
     gamestate.target_cursors.stoplog_cursor.send_object_cursor( client );
   }
   else
@@ -368,11 +373,11 @@ void textcmd_stoplog( Network::Client* client )
     auto res = client->stop_log();
     if ( res == Network::PacketLog::Success )
     {
-      send_sysmessage( client, "I/O log file closed." );
+      send_sysmessage( client, "I/O log file closed." );  // (Internal)
     }
     else
     {
-      send_sysmessage( client, "Packet Logging not enabled." );
+      send_sysmessage( client, "Packet Logging not enabled." );  // (Internal)
     }
   }
 }
@@ -401,26 +406,28 @@ void textcmd_list_crit_scripts( Network::Client* )
 }
 void textcmd_procs( Network::Client* client )
 {
-  send_sysmessage( client, "Process Information:" );
+  send_sysmessage( client, "Process Information:" );  // (Internal)
 
   send_sysmessage(
       client,
-      "Running: " + Clib::tostring( (unsigned int)( scriptScheduler.getRunlist().size() ) ) );
+      "Running: " +
+          Clib::tostring( (unsigned int)( scriptScheduler.getRunlist().size() ) ) );  // (Internal)
   send_sysmessage(
       client,
-      "Blocked: " + Clib::tostring( (unsigned int)( scriptScheduler.getHoldlist().size() ) ) );
+      "Blocked: " +
+          Clib::tostring( (unsigned int)( scriptScheduler.getHoldlist().size() ) ) );  // (Internal)
 }
 
 void textcmd_log_profile( Network::Client* client )
 {
   log_all_script_cycle_counts( false );
-  send_sysmessage( client, "Script profile written to logfile" );
+  send_sysmessage( client, "Script profile written to logfile" );  // (Internal)
 }
 
 void textcmd_log_profile_clear( Network::Client* client )
 {
   log_all_script_cycle_counts( true );
-  send_sysmessage( client, "Script profile written to logfile and cleared" );
+  send_sysmessage( client, "Script profile written to logfile and cleared" );  // (Internal)
 }
 
 void textcmd_heapcheck( Network::Client* /*client*/ )
@@ -438,14 +445,14 @@ void textcmd_threads( Network::Client* client )
 void textcmd_constat( Network::Client* client )
 {
   int i = 0;
-  send_sysmessage( client, "Connection statuses:" );
+  send_sysmessage( client, "Connection statuses:" );  // (Internal)
   for ( Clients::const_iterator itr = networkManager.clients.begin(),
                                 end = networkManager.clients.end();
         itr != end; ++itr )
   {
     OSTRINGSTREAM os;
     os << i << ": " << ( *itr )->status() << " ";
-    send_sysmessage( client, OSTRINGSTREAM_STR( os ) );
+    send_sysmessage( client, OSTRINGSTREAM_STR( os ) );  // (Internal)
     ++i;
   }
 }
@@ -456,9 +463,9 @@ void textcmd_singlezone_integ_item( Network::Client* client )
   Pos2d gridp = zone_convert( client->chr->pos() );
   bool ok = check_single_zone_item_integrity( gridp, client->chr->realm() );
   if ( ok )
-    send_sysmessage( client, "Item integrity checks out OK!" );
+    send_sysmessage( client, "Item integrity checks out OK!" );  // (Internal)
   else
-    send_sysmessage( client, "Item integrity problems detected. " );
+    send_sysmessage( client, "Item integrity problems detected. " );  // (Internal)
 }
 
 bool check_item_integrity();
@@ -466,9 +473,9 @@ void textcmd_integ_item( Network::Client* client )
 {
   bool ok = check_item_integrity();
   if ( ok )
-    send_sysmessage( client, "Item integrity checks out OK!" );
+    send_sysmessage( client, "Item integrity checks out OK!" );  // (Internal)
   else
-    send_sysmessage( client, "Item integrity problems detected.  Check logfile" );
+    send_sysmessage( client, "Item integrity problems detected.  Check logfile" );  // (Internal)
 }
 void check_character_integrity();
 void textcmd_integ_chr( Network::Client* /*client*/ )

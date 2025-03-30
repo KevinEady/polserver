@@ -31,7 +31,7 @@ void UDoor::builtin_on_use( Network::Client* client )
 {
   if ( locked() )
   {
-    private_say_above( client->chr, this, "That is locked." );
+    private_say_above( client->chr, this, "That is locked." );  // 501283 That is locked.
   }
   else
   {

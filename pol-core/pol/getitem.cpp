@@ -104,21 +104,22 @@ void GottenItem::handle( Network::Client* client, PKTIN_07* msg )
   }
   if ( item->inuse() )
   {
-    send_sysmessage( client, "That is already being used." );
+    send_sysmessage( client,
+                     "That is already being used." );  // 1040021 That is already being used.
     send_item_move_failure( client, MOVE_ITEM_FAILURE_CANNOT_PICK_THAT_UP );
     return;
   }
 
   if ( !client->chr->can_move( item ) )
   {
-    send_sysmessage( client, "You cannot move that." );
+    send_sysmessage( client, "You cannot move that." );  // 1005636 You cannot move this.
     send_item_move_failure( client, MOVE_ITEM_FAILURE_CANNOT_PICK_THAT_UP );
     return;
   }
 
   if ( !item->check_unequiptest_scripts() || !item->check_unequip_script() )
   {
-    send_sysmessage( client, "You cannot unequip that." );
+    send_sysmessage( client, "You cannot unequip that." );  // ?
     send_item_move_failure( client, MOVE_ITEM_FAILURE_CANNOT_PICK_THAT_UP );
     return;
   }
