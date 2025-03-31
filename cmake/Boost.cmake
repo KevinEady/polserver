@@ -2,6 +2,25 @@ message("* libboost")
 set (BOOST_SOURCE_DIR "${POL_EXT_LIB_DIR}/boost_1_87_0")
 set (BOOST_STAGE_LIB_DIR "${BOOST_SOURCE_DIR}/stage/lib")
 
+
+if (NOT CMAKE_SYSTEM_NAME MATCHES "Darwin")
+  # Try to find a static version of libbacktrace
+  find_library(LIBBACKTRACE_STATIC NAMES backtrace
+      PATHS /usr/local/lib /usr/lib /opt/homebrew/lib /lib
+  )
+
+  if (LIBBACKTRACE_STATIC)
+      message("Found libbacktrace: ${LIBBACKTRACE_STATIC}")
+      if (LIBBACKTRACE_STATIC MATCHES "\\.a$")
+          message("libbacktrace is a static library")
+      else()
+          message("libbacktrace is not static")
+      endif()
+  else()
+      message("libbacktrace static library not found")
+  endif()
+endif()
+
 if (clang)
   set (BOOST_TOOLSET "clang")
 elseif (gcc)
